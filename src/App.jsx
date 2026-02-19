@@ -19,6 +19,12 @@ import About from './pages/About'
 import Terms from './pages/Terms'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import AdminLayout from './pages/admin/AdminLayout'
+import AdminDashboard from './pages/admin/Dashboard'
+import AdminMarkets from './pages/admin/Markets'
+import AdminUsers from './pages/admin/Users'
+import AdminFinance from './pages/admin/Finance'
+import AdminSettings from './pages/admin/Settings'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -34,6 +40,23 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
+    )
+  }
+
+  const isAdmin = location.pathname.startsWith('/admin')
+
+  if (isAdmin)
+  {
+    return (
+      <AdminLayout>
+        <Routes>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/markets" element={<AdminMarkets />} />
+          <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/finance" element={<AdminFinance />} />
+          <Route path="/admin/settings" element={<AdminSettings />} />
+        </Routes>
+      </AdminLayout>
     )
   }
 

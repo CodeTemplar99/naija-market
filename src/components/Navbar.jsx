@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Search, Wallet, Bell, Menu, ChevronDown, Sun, Moon } from 'lucide-react'
+import { Search, Wallet, Bell, Menu, ChevronDown, Sun, Moon, Eye, EyeOff } from 'lucide-react'
 import { useTheme } from '../context/ThemeContext'
 
 const Navbar = ({ toggleSidebar }) => {
   const { theme, toggleTheme } = useTheme()
+  const [showBalance, setShowBalance] = useState(true)
 
   return (
     <nav className="topbar glass">
@@ -26,10 +27,13 @@ const Navbar = ({ toggleSidebar }) => {
 
         <Link to="/deposit" className="btn btn-primary btn-sm">Deposit</Link>
 
-        <Link to="/portfolio" className="wallet-pill">
+        <div className="wallet-pill">
           <Wallet size={14} />
-          <span className="wb-val">₦245,600</span>
-        </Link>
+          <span className="wb-val">{showBalance ? '₦245,600' : '₦•••••'}</span>
+          <button className="bal-toggle" onClick={() => setShowBalance(!showBalance)} aria-label="Toggle balance visibility">
+            {showBalance ? <Eye size={13} /> : <EyeOff size={13} />}
+          </button>
+        </div>
 
         <Link to="/notifications" className="notif-wrap">
           <button className="icon-btn"><Bell size={18} /></button>
@@ -54,7 +58,9 @@ const Navbar = ({ toggleSidebar }) => {
         .search-input { background: none; border: none; color: var(--text); width: 100%; outline: none; font-family: var(--font-main); font-size: 0.85rem; }
         .kbd { background: var(--surface-hover); border: 1px solid var(--border); padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.6rem; color: var(--text-muted); font-family: monospace; }
         .wallet-pill { display: flex; align-items: center; gap: 0.5rem; background: rgba(0,135,81,0.06); border: 1px solid rgba(0,135,81,0.12); padding: 0.35rem 0.85rem; border-radius: 10px; }
-        .wb-val { font-weight: 700; font-size: 0.85rem; }
+        .wb-val { font-weight: 700; font-size: 0.85rem; min-width: 60px; }
+        .bal-toggle { background: none; border: none; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; padding: 0; }
+        .bal-toggle:hover { color: var(--text); }
         .notif-wrap { position: relative; }
         .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; }
         .icon-btn:hover { color: var(--text); }
@@ -63,7 +69,6 @@ const Navbar = ({ toggleSidebar }) => {
         .avatar-btn { display: flex; align-items: center; gap: 0.4rem; color: var(--text); }
         .avatar-circle { width: 30px; height: 30px; background: var(--surface-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; border: 1px solid var(--border); }
 
-        /* theme toggle icons */
         .theme-toggle { position: relative; }
         .ticon { position: absolute; top: 50%; transform: translateY(-50%); pointer-events: none; color: white; }
         .tl { left: 5px; }
@@ -72,6 +77,7 @@ const Navbar = ({ toggleSidebar }) => {
         @media (max-width: 768px) {
           .search-box { width: 180px; }
           .wallet-pill .wb-val { display: none; }
+          .bal-toggle { display: none; }
           .kbd { display: none; }
         }
       `}</style>

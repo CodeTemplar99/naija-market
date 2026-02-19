@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import Footer from './components/Footer'
@@ -17,9 +17,25 @@ import Docs from './pages/Docs'
 import HelpCenter from './pages/HelpCenter'
 import About from './pages/About'
 import Terms from './pages/Terms'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const location = useLocation()
+
+  // Auth pages render without sidebar/navbar/footer
+  const isAuthPage = ['/login', '/signup'].includes(location.pathname)
+
+  if (isAuthPage)
+  {
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    )
+  }
 
   return (
     <div className="app-container">

@@ -2,32 +2,51 @@ import React, { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
+import Footer from './components/Footer'
 import Markets from './pages/Markets'
 import MarketDetail from './pages/MarketDetail'
 import Portfolio from './pages/Portfolio'
 import Leaderboard from './pages/Leaderboard'
 import Activity from './pages/Activity'
+import Profile from './pages/Profile'
+import Notifications from './pages/Notifications'
+import Deposit from './pages/Deposit'
+import Withdraw from './pages/Withdraw'
+import Accuracy from './pages/Accuracy'
+import Docs from './pages/Docs'
+import HelpCenter from './pages/HelpCenter'
+import About from './pages/About'
+import Terms from './pages/Terms'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="app-container">
-      {sidebarOpen && (
-        <div className="sidebar-overlay visible" onClick={() => setSidebarOpen(false)} />
-      )}
+      {sidebarOpen && <div className="sidebar-overlay visible" onClick={() => setSidebarOpen(false)} />}
       <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-      <div className="main-content">
-        <Navbar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-        <Routes>
-          <Route path="/" element={<Markets />} />
-          <Route path="/market/:id" element={<MarketDetail />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/activity" element={<Activity />} />
-          {/* Catch-all for category routes */}
-          <Route path="/:category" element={<Markets />} />
-        </Routes>
+      <div className="app-wrapper">
+        <div className="main-content">
+          <Navbar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+          <Routes>
+            <Route path="/" element={<Markets />} />
+            <Route path="/market/:id" element={<MarketDetail />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/activity" element={<Activity />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/notifications" element={<Notifications />} />
+            <Route path="/deposit" element={<Deposit />} />
+            <Route path="/withdraw" element={<Withdraw />} />
+            <Route path="/accuracy" element={<Accuracy />} />
+            <Route path="/docs" element={<Docs />} />
+            <Route path="/help" element={<HelpCenter />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/:category" element={<Markets />} />
+          </Routes>
+        </div>
+        <Footer />
       </div>
     </div>
   )

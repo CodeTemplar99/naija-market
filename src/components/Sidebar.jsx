@@ -1,9 +1,9 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { LayoutGrid, TrendingUp, PieChart, Info, HelpCircle, Trophy, Activity, MessageSquare } from 'lucide-react'
+import { LayoutGrid, PieChart, Trophy, Activity, Flame, Globe, Landmark, Dumbbell, Bitcoin, DollarSign, Cpu, Clapperboard, BarChart3, Leaf, Star, Vote, MoreHorizontal } from 'lucide-react'
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-  const menuItems = [
+  const mainNav = [
     { name: 'Markets', icon: LayoutGrid, path: '/' },
     { name: 'Portfolio', icon: PieChart, path: '/portfolio' },
     { name: 'Leaderboard', icon: Trophy, path: '/leaderboard' },
@@ -11,30 +11,36 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   ]
 
   const categories = [
-    { name: 'Politics', path: '/politics' },
-    { name: 'Crypto', path: '/crypto' },
-    { name: 'Sports', path: '/sports' },
-    { name: 'Entertainment', path: '/entertainment' },
-    { name: 'Economy', path: '/economy' },
+    { name: 'Politics', icon: Landmark, path: '/politics' },
+    { name: 'Sports', icon: Dumbbell, path: '/sports' },
+    { name: 'Crypto', icon: Bitcoin, path: '/crypto' },
+    { name: 'Finance', icon: DollarSign, path: '/finance' },
+    { name: 'Tech', icon: Cpu, path: '/tech' },
+    { name: 'Culture', icon: Clapperboard, path: '/culture' },
+    { name: 'Economy', icon: BarChart3, path: '/economy' },
+    { name: 'Climate', icon: Leaf, path: '/climate-science' },
+    { name: 'Elections', icon: Vote, path: '/elections' },
+    { name: 'World', icon: Globe, path: '/world' },
   ]
 
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
-      <div className="sidebar-header">
-        <div className="logo-section">
-          <div className="logo-icon">NP</div>
-          <span className="logo-text">Naija<span className="primary-text">Predict</span></span>
+      <div className="sb-header">
+        <div className="logo">
+          <div className="logo-mark">NP</div>
+          <span className="logo-name">Naija<span className="prim">Predict</span></span>
         </div>
       </div>
 
-      <nav className="sidebar-nav">
-        <div className="nav-group">
-          <p className="nav-label">General</p>
-          {menuItems.map((item) => (
+      <nav className="sb-nav">
+        <div className="nav-section">
+          {mainNav.map((item) => (
             <NavLink
               key={item.name}
               to={item.path}
-              className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+              end={item.path === '/'}
+              className={({ isActive }) => `sb-link ${isActive ? 'active' : ''}`}
+              onClick={() => setIsOpen(false)}
             >
               <item.icon size={18} />
               <span>{item.name}</span>
@@ -42,151 +48,81 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           ))}
         </div>
 
-        <div className="nav-group">
-          <p className="nav-label">Categories</p>
+        <div className="nav-section">
+          <p className="section-label">Browse</p>
           {categories.map((cat) => (
             <NavLink
               key={cat.name}
               to={cat.path}
-              className="nav-item sub-nav"
+              className={({ isActive }) => `sb-link sub ${isActive ? 'active' : ''}`}
+              onClick={() => setIsOpen(false)}
             >
-              <div className="dot"></div>
+              <cat.icon size={16} />
               <span>{cat.name}</span>
             </NavLink>
           ))}
         </div>
       </nav>
 
-      <div className="sidebar-footer">
-        <div className="support-card glass">
-          <MessageSquare size={16} />
-          <span>Need Help?</span>
+      <div className="sb-footer">
+        <div className="sb-cta glass">
+          <Flame size={18} color="var(--accent-yellow)" />
+          <div className="cta-text">
+            <span className="cta-title">Create a Market</span>
+            <span className="cta-sub">Ask anything. Trade everything.</span>
+          </div>
         </div>
       </div>
 
       <style>{`
         .sidebar {
-          width: 260px;
-          height: 100vh;
-          background: var(--surface);
-          border-right: 1px solid var(--border);
-          position: fixed;
-          left: 0;
-          top: 0;
-          display: flex;
-          flex-direction: column;
-          z-index: 1000;
-          transition: transform 0.3s ease;
+          width: 250px; height: 100vh; background: var(--surface);
+          border-right: 1px solid var(--border); position: fixed;
+          left: 0; top: 0; display: flex; flex-direction: column;
+          z-index: 1000; transition: transform 0.3s ease;
         }
-
         @media (max-width: 1024px) {
           .sidebar { transform: translateX(-100%); }
-          .sidebar.open { transform: translateX(0); }
+          .sidebar.open { transform: translateX(0); box-shadow: var(--shadow-lg); }
         }
-
-        .sidebar-header {
-          padding: 1.5rem;
-          border-bottom: 1px solid var(--border);
+        .sb-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+        .logo { display: flex; align-items: center; gap: 0.7rem; }
+        .logo-mark {
+          width: 30px; height: 30px; background: var(--primary); border-radius: 8px;
+          display: flex; align-items: center; justify-content: center;
+          font-weight: 800; font-size: 0.7rem; color: white;
+          box-shadow: 0 4px 12px rgba(0,135,81,0.25);
         }
+        .logo-name { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+        .prim { color: var(--primary-light); }
 
-        .logo-section {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
+        .sb-nav { flex: 1; overflow-y: auto; padding: 1rem 0.75rem; }
+        .nav-section { margin-bottom: 1.5rem; }
+        .section-label {
+          font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+          color: var(--text-muted); letter-spacing: 0.06em;
+          padding: 0 0.75rem; margin-bottom: 0.6rem;
         }
-
-        .logo-icon {
-          width: 32px;
-          height: 32px;
-          background: var(--primary);
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 800;
-          font-size: 0.75rem;
-          color: white;
+        .sb-link {
+          display: flex; align-items: center; gap: 0.7rem;
+          padding: 0.6rem 0.75rem; border-radius: 10px;
+          color: var(--text-muted); font-weight: 600; font-size: 0.9rem;
+          transition: all 0.15s; margin-bottom: 1px;
         }
+        .sb-link:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+        .sb-link.active { background: rgba(0,135,81,0.1); color: var(--primary-light); }
+        .sb-link.sub { font-size: 0.85rem; padding: 0.5rem 0.75rem; }
 
-        .logo-text {
-          font-family: var(--font-display);
-          font-size: 1.5rem;
-          font-weight: 700;
-          letter-spacing: -0.02em;
-        }
-
-        .primary-text { color: var(--primary-light); }
-
-        .sidebar-nav {
-          padding: 1.5rem;
-          flex: 1;
-          overflow-y: auto;
-        }
-
-        .nav-group { margin-bottom: 2rem; }
-
-        .nav-label {
-          font-size: 0.7rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          color: var(--text-muted);
-          letter-spacing: 0.05em;
-          margin-bottom: 1rem;
-          padding-left: 0.5rem;
-        }
-
-        .nav-item {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 0.75rem 1rem;
-          border-radius: 10px;
-          color: var(--text-muted);
-          font-weight: 600;
-          font-size: 0.95rem;
-          transition: all 0.2s;
-          margin-bottom: 0.2rem;
-        }
-
-        .nav-item:hover {
-          background: rgba(255, 255, 255, 0.03);
-          color: var(--text);
-        }
-
-        .nav-item.active {
-          background: rgba(0, 135, 81, 0.1);
-          color: var(--primary-light);
-        }
-
-        .sub-nav {
-          font-size: 0.9rem;
-          padding: 0.6rem 1rem;
-        }
-
-        .dot {
-          width: 4px;
-          height: 4px;
-          background: var(--text-muted);
-          border-radius: 50%;
-        }
-
-        .nav-item.active .dot { background: var(--primary-light); }
-
-        .sidebar-footer { padding: 1.5rem; }
-
-        .support-card {
-          padding: 0.75rem 1rem;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          font-weight: 600;
-          font-size: 0.9rem;
-          cursor: pointer;
+        .sb-footer { padding: 0.75rem; }
+        .sb-cta {
+          padding: 1rem; border-radius: 16px; display: flex;
+          align-items: center; gap: 0.75rem; cursor: pointer;
           transition: background 0.2s;
         }
-
-        .support-card:hover { background: var(--surface-light); }
+        .sb-cta:hover { background: var(--surface-light); }
+        .cta-text { display: flex; flex-direction: column; }
+        .cta-title { font-weight: 700; font-size: 0.85rem; }
+        .cta-sub { font-size: 0.7rem; color: var(--text-muted); }
       `}</style>
     </aside>
   )

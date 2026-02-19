@@ -1,170 +1,97 @@
 import React from 'react'
-import { Search, Wallet, User, Bell, Menu } from 'lucide-react'
+import { Search, Wallet, Bell, Menu, ChevronDown } from 'lucide-react'
 
 const Navbar = ({ toggleSidebar }) => {
   return (
-    <nav className="navbar glass">
-      <div className="nav-left">
-        <button className="menu-btn" onClick={toggleSidebar}>
-          <Menu size={20} />
-        </button>
-        <div className="search-box glass">
-          <Search size={18} className="search-icon" />
-          <input type="text" placeholder="Search markets (e.g. Tinubu, AFCON, Solana)" />
+    <nav className="topbar glass">
+      <div className="tb-left">
+        <button className="mobile-menu" onClick={toggleSidebar}><Menu size={20} /></button>
+        <div className="search-box">
+          <Search size={16} className="search-icon" />
+          <input type="text" placeholder="Search events" className="search-input" />
+          <kbd className="kbd">/</kbd>
         </div>
       </div>
 
-      <div className="nav-right">
-        <div className="wallet-balance glass">
-          <Wallet size={16} className="wallet-icon" />
-          <div className="balance-info">
-            <span className="balance-val">₦245,600.00</span>
-            <span className="balance-label">Available</span>
-          </div>
+      <div className="tb-right">
+        <button className="btn btn-primary btn-sm">Deposit</button>
+
+        <div className="wallet-pill">
+          <Wallet size={14} />
+          <span className="wb-val">₦245,600</span>
         </div>
-        
-        <button className="icon-btn">
-          <Bell size={20} />
-          <div className="notification-dot"></div>
-        </button>
 
-        <div className="divider"></div>
+        <div className="notif-wrap">
+          <button className="icon-btn"><Bell size={18} /></button>
+          <span className="notif-badge">3</span>
+        </div>
 
-        <button className="user-profile">
-          <div className="avatar">OO</div>
-          <span className="user-name">Olawale</span>
+        <button className="avatar-btn">
+          <div className="avatar-circle">OO</div>
+          <ChevronDown size={14} />
         </button>
       </div>
 
       <style>{`
-        .navbar {
-          height: 64px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 1.5rem;
-          border-radius: 16px;
-          margin-bottom: 2rem;
-          position: sticky;
-          top: 1rem;
-          z-index: 100;
+        .topbar {
+          height: 56px; display: flex; align-items: center;
+          justify-content: space-between; padding: 0 1.25rem;
+          border-radius: 14px; margin-bottom: 1.5rem;
+          position: sticky; top: 0.75rem; z-index: 100;
         }
-
-        .nav-left, .nav-right {
-          display: flex;
-          align-items: center;
-          gap: 1.5rem;
-        }
-
-        .menu-btn {
-          background: none;
-          border: none;
-          color: var(--text);
-          cursor: pointer;
-          display: none;
-        }
-
-        @media (max-width: 1024px) {
-          .menu-btn { display: flex; }
-        }
+        .tb-left, .tb-right { display: flex; align-items: center; gap: 1rem; }
+        .mobile-menu { background: none; border: none; color: var(--text); cursor: pointer; display: none; }
+        @media (max-width: 1024px) { .mobile-menu { display: flex; } }
 
         .search-box {
-          display: flex;
-          align-items: center;
-          padding: 0.6rem 1.25rem;
-          border-radius: 100px;
-          width: 400px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid var(--border);
+          display: flex; align-items: center; gap: 0.5rem;
+          background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+          padding: 0.45rem 1rem; border-radius: 10px; width: 340px;
+        }
+        .search-icon { color: var(--text-muted); flex-shrink: 0; }
+        .search-input {
+          background: none; border: none; color: var(--text);
+          width: 100%; outline: none; font-family: var(--font-main); font-size: 0.85rem;
+        }
+        .kbd {
+          background: var(--surface-light); border: 1px solid var(--border);
+          padding: 0.1rem 0.4rem; border-radius: 4px;
+          font-size: 0.65rem; color: var(--text-muted); font-family: monospace;
         }
 
-        .search-box input {
-          background: none;
-          border: none;
-          color: var(--text);
-          margin-left: 0.75rem;
-          width: 100%;
-          outline: none;
-          font-family: var(--font-main);
-          font-size: 0.9rem;
+        .wallet-pill {
+          display: flex; align-items: center; gap: 0.5rem;
+          background: rgba(0,135,81,0.06); border: 1px solid rgba(0,135,81,0.12);
+          padding: 0.35rem 0.85rem; border-radius: 10px;
         }
+        .wb-val { font-weight: 700; font-size: 0.85rem; }
 
-        .wallet-balance {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 0.4rem 1rem;
-          border-radius: 12px;
-          background: rgba(0, 135, 81, 0.05);
-          border: 1px solid rgba(0, 135, 81, 0.1);
-        }
-
-        .wallet-icon { color: var(--primary-light); }
-
-        .balance-info { display: flex; flex-direction: column; }
-
-        .balance-val {
-          font-size: 0.9rem;
-          font-weight: 700;
-          color: var(--text);
-        }
-
-        .balance-label {
-          font-size: 0.65rem;
-          color: var(--text-muted);
-          font-weight: 600;
-          text-transform: uppercase;
-        }
-
-        .icon-btn {
-          background: none;
-          border: none;
-          color: var(--text-muted);
-          cursor: pointer;
-          position: relative;
-        }
-
-        .notification-dot {
-          position: absolute;
-          top: -2px;
-          right: -2px;
-          width: 8px;
-          height: 8px;
-          background: var(--accent-no);
-          border-radius: 50%;
+        .notif-wrap { position: relative; }
+        .icon-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; }
+        .icon-btn:hover { color: var(--text); }
+        .notif-badge {
+          position: absolute; top: -6px; right: -6px;
+          background: var(--accent-no); color: white;
+          width: 16px; height: 16px; border-radius: 50%;
+          font-size: 0.55rem; font-weight: 800;
+          display: flex; align-items: center; justify-content: center;
           border: 2px solid var(--surface);
         }
-
-        .divider {
-          width: 1px;
-          height: 24px;
-          background: var(--border);
+        .avatar-btn {
+          display: flex; align-items: center; gap: 0.4rem;
+          background: none; border: none; color: var(--text); cursor: pointer;
+        }
+        .avatar-circle {
+          width: 30px; height: 30px; background: var(--surface-light);
+          border-radius: 50%; display: flex; align-items: center; justify-content: center;
+          font-size: 0.7rem; font-weight: 700; border: 1px solid var(--border);
         }
 
-        .user-profile {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          background: none;
-          border: none;
-          color: var(--text);
-          cursor: pointer;
+        @media (max-width: 768px) {
+          .search-box { width: 200px; }
+          .wallet-pill .wb-val { display: none; }
+          .kbd { display: none; }
         }
-
-        .avatar {
-          width: 32px;
-          height: 32px;
-          background: var(--surface-light);
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-weight: 700;
-          font-size: 0.8rem;
-          border: 1px solid var(--border);
-        }
-
-        .user-name { font-weight: 600; font-size: 0.9rem; }
       `}</style>
     </nav>
   )

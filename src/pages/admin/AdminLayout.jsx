@@ -11,6 +11,7 @@ const AdminLayout = ({ children }) => {
     { icon: Briefcase, label: 'Markets', path: '/admin/markets' },
     { icon: Users, label: 'Users & KYC', path: '/admin/users' },
     { icon: DollarSign, label: 'Finance', path: '/admin/finance' },
+    { icon: BarChart3, label: 'Earnings', path: '/admin/earnings' },
     { icon: Settings, label: 'Settings', path: '/admin/settings' },
   ]
 

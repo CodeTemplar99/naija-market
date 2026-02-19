@@ -25,6 +25,7 @@ import AdminMarkets from './pages/admin/Markets'
 import AdminUsers from './pages/admin/Users'
 import AdminFinance from './pages/admin/Finance'
 import AdminSettings from './pages/admin/Settings'
+import AdminEarnings from './pages/admin/Earnings'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -54,6 +55,7 @@ function App() {
           <Route path="/admin/markets" element={<AdminMarkets />} />
           <Route path="/admin/users" element={<AdminUsers />} />
           <Route path="/admin/finance" element={<AdminFinance />} />
+          <Route path="/admin/earnings" element={<AdminEarnings />} />
           <Route path="/admin/settings" element={<AdminSettings />} />
         </Routes>
       </AdminLayout>

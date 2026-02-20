@@ -1,8 +1,9 @@
 import React from 'react'
-import { Activity, Users, DollarSign, TrendingUp, TrendingDown, ArrowUpRight, ArrowDownRight, Zap, Globe, Clock, Shield, BarChart2 } from 'lucide-react'
+import { Activity, Users, DollarSign, ArrowUpRight, ArrowDownRight, Zap, Globe, Clock, Shield, BarChart2, TrendingUp, Target, UserPlus, Flame } from 'lucide-react'
 
+// Sub-component for individual top stats
 const StatCard = ({ title, value, change, trend, icon: Icon, color, sparkline }) => (
-  <div className="stat-card glass">
+  <div className="stat-card glass glow-fx" style={{ "--gc": color }}>
     <div className="stat-top">
       <div className="stat-title-wrap">
         <div className="stat-icon" style={{ background: `${color}15`, color }}>
@@ -18,7 +19,6 @@ const StatCard = ({ title, value, change, trend, icon: Icon, color, sparkline })
           {trend === 'up' ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
           {change}
         </span>
-        <span className="sc-period">vs yesterday</span>
       </div>
       {sparkline && (
         <svg viewBox="0 0 100 30" className="sparkline">
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
       <div className="dash-header">
         <div>
           <h1 className="dash-title">Command Center</h1>
-          <p className="dash-subtitle">Real-time platform overview and core metrics.</p>
+          <p className="dash-subtitle">Real-time platform overview and predictive models.</p>
         </div>
         <div className="dash-actions">
           <span className="live-indicator"><span className="dot"></span> Live Data</span>
@@ -46,12 +46,13 @@ const AdminDashboard = () => {
       <div className="dash-grid-top">
         <StatCard title="Trading Volume" value="₦485.2M" change="+12.5%" trend="up" icon={Activity} color="#00C853" sparkline="M0,25 Q20,10 40,20 T80,15 T100,5" />
         <StatCard title="Total Liquidity" value="₦1.2B" change="+2.1%" trend="up" icon={DollarSign} color="#4096FF" sparkline="M0,20 Q20,25 40,15 T80,10 T100,5" />
-        <StatCard title="Protocol Revenue" value="₦14.5M" change="-4.1%" trend="down" icon={BarChart2} color="#FFD600" sparkline="M0,5 Q20,15 40,10 T80,25 T100,20" />
-        <StatCard title="Active Traders" value="12,432" change="+8.2%" trend="up" icon={Users} color="#e040fb" sparkline="M0,30 Q20,10 40,15 T80,5 T100,0" />
+        <StatCard title="Votes Per Minute (VPM)" value="1,240" change="+45%" trend="up" icon={Zap} color="#FFD600" sparkline="M0,30 Q20,15 40,20 T80,10 T100,5" />
+        <StatCard title="New Signups Today" value="842" change="-2.4%" trend="down" icon={UserPlus} color="#e040fb" sparkline="M0,5 Q20,25 40,20 T80,15 T100,25" />
       </div>
 
       <div className="dash-grid-main">
-        <div className="dash-chart glass">
+        {/* Main Chart Area */}
+        <div className="dash-chart glass flex-col justify-between">
           <div className="ch-header">
             <h3>Volume vs Liquidity</h3>
             <div className="ch-legend">
@@ -86,21 +87,21 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        {/* Right Side Info Panels */}
         <div className="dash-side">
           <div className="ds-box glass">
-            <h3>Top Active Markets</h3>
+            <h3><Flame size={16} className="inline-icon text-orange" /> Best Performing Markets</h3>
             <div className="tm-list">
               {[
                 { name: 'Will Bitcoin hit $100k in Feb?', vol: '₦142.5M', change: '+12%' },
                 { name: 'Osimhen to score next match?', vol: '₦89.2M', change: '+5%' },
-                { name: 'Naira to Dollar exchange rate', vol: '₦64.1M', change: '-2%' },
-                { name: 'Grammy Album of the Year', vol: '₦40.0M', change: '+18%' },
+                { name: 'Naira to Dollar exchange rate', vol: '₦64.1M', change: '+22%' },
               ].map((m, i) => (
                 <div key={i} className="tm-item">
                   <span className="tm-name">{m.name}</span>
                   <div className="tm-stats">
                     <span className="tm-vol">{m.vol}</span>
-                    <span className={`tm-change ${m.change.startsWith('+') ? 'green' : 'red'}`}>{m.change}</span>
+                    <span className="tm-change green">{m.change}</span>
                   </div>
                 </div>
               ))}
@@ -108,95 +109,110 @@ const AdminDashboard = () => {
           </div>
 
           <div className="ds-box glass">
-            <h3>Platform Health</h3>
+            <h3><Shield size={16} className="inline-icon text-yellow" /> Users to Watch (Anomalies)</h3>
             <div className="ph-list">
-              <div className="ph-item">
-                <div className="phi-icon blue"><Globe size={14} /></div>
+              <div className="ph-item user-watch">
+                <div className="phi-avatar bg-red">O</div>
                 <div className="phi-info">
-                  <span className="phi-label">API Latency</span>
-                  <span className="phi-val">42ms</span>
+                  <span className="phi-label">@OlaTrader</span>
+                  <span className="phi-val">Unusual Win Rate (95%)</span>
                 </div>
-                <span className="phi-status green">Good</span>
+                <button className="btn-solid-glow small bg-red">Flag</button>
               </div>
-              <div className="ph-item">
-                <div className="phi-icon yellow"><Zap size={14} /></div>
+              <div className="ph-item user-watch">
+                <div className="phi-avatar bg-blue">W</div>
                 <div className="phi-info">
-                  <span className="phi-label">Match Engine</span>
-                  <span className="phi-val">2.1k TPS</span>
+                  <span className="phi-label">@WhaleKing</span>
+                  <span className="phi-val">Massive Deposits (+₦50M)</span>
                 </div>
-                <span className="phi-status green">Optimal</span>
-              </div>
-              <div className="ph-item">
-                <div className="phi-icon purple"><Shield size={14} /></div>
-                <div className="phi-info">
-                  <span className="phi-label">Pending KYC</span>
-                  <span className="phi-val">45 Requests</span>
-                </div>
-                <span className="phi-status orange">Action Req</span>
+                <button className="btn-solid-glow small bg-blue">Review</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="dash-footer glass">
-        <div className="df-header">
-          <h3>Live Activity Stream</h3>
-          <button className="btn-ghost btn-sm">View All</button>
+      {/* Forecast Section */}
+      <div className="forecast-section glass mt-6">
+        <div className="fc-header">
+          <div className="fc-title-group">
+            <h3><Target size={20} className="inline-icon text-cyan" /> Predictive AI Forecasts</h3>
+            <p>Expected platform metrics for the end of this month based on current velocity.</p>
+          </div>
+          <span className="ai-badge">AI Confidence: 92%</span>
         </div>
-        <div className="df-grid">
-          {[
-            { type: 'trade', msg: 'Large trade: ₦2.5M on "Bitcoin $100k" - YES', time: 'Just now' },
-            { type: 'user', msg: 'New large deposit detected: ₦10M by @WhaleKing', time: '2 mins ago' },
-            { type: 'market', msg: 'Market Resolution Pending: "Lagos Traffic"', time: '5 mins ago' },
-            { type: 'alert', msg: 'High volatility in "Naira to Dollar" market', time: '12 mins ago' },
-          ].map((a, i) => (
-            <div key={i} className="act-item">
-              <div className={`act-dot ${a.type}`}></div>
-              <div className="act-content">
-                <p>{a.msg}</p>
-                <span className="mono">{a.time}</span>
-              </div>
-            </div>
-          ))}
+
+        <div className="fc-grid">
+          <div className="fc-card">
+            <h4>Projected TVL</h4>
+            <div className="fc-val text-blue">₦1.8B</div>
+            <div className="fc-bar"><div className="fc-fill bg-blue" style={{ width: '75%' }}></div></div>
+            <span className="fc-eta">Target: ₦2.0B by EOM</span>
+          </div>
+
+          <div className="fc-card">
+            <h4>Expected MTD Revenue</h4>
+            <div className="fc-val text-green">₦62.5M</div>
+            <div className="fc-bar"><div className="fc-fill bg-green" style={{ width: '90%' }}></div></div>
+            <span className="fc-eta">Shattering previous record!</span>
+          </div>
+
+          <div className="fc-card">
+            <h4>Estimated Active Users</h4>
+            <div className="fc-val text-purple">18,500</div>
+            <div className="fc-bar"><div className="fc-fill bg-purple" style={{ width: '60%' }}></div></div>
+            <span className="fc-eta">Steady organic growth</span>
+          </div>
+
+          <div className="fc-card">
+            <h4>Resolution Workload</h4>
+            <div className="fc-val text-yellow">45 Mkts/Day</div>
+            <div className="fc-bar"><div className="fc-fill bg-yellow" style={{ width: '85%' }}></div></div>
+            <span className="fc-eta">Warning: Operational strain ahead</span>
+          </div>
         </div>
       </div>
 
       <style>{`
-        .admin-dash { display: flex; flex-direction: column; gap: 1.5rem; max-width: 1400px; margin: 0 auto; }
+        .admin-dash { display: flex; flex-direction: column; gap: 1.5rem; max-width: 1400px; margin: 0 auto; padding-bottom: 2rem; }
         
         .dash-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.5rem; }
-        .dash-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; font-family: var(--font-display); background: linear-gradient(135deg, #fff, #888); -webkit-background-clip: text; color: transparent; margin-bottom: 0.2rem; }
+        .dash-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; font-family: var(--font-display); background: linear-gradient(135deg, #fff, #999); -webkit-background-clip: text; color: transparent; margin-bottom: 0.2rem; }
         .dash-subtitle { color: var(--text-muted); font-size: 1rem; }
         .dash-actions { display: flex; align-items: center; gap: 1rem; }
-        .live-indicator { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; background: rgba(0,200,83,0.1); color: var(--accent-yes); border-radius: 8px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; border: 1px solid rgba(0,200,83,0.2); }
+        
+        .live-indicator { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; background: rgba(0,200,83,0.1); color: var(--accent-yes); border-radius: 8px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(0,200,83,0.2); }
         .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } 100% { opacity: 1; transform: scale(1); } }
         
-        .glass-select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.85rem; font-weight: 600; outline: none; appearance: none; cursor: pointer; }
-        .glass-select option { background: var(--bg); color: white; }
+        .glass-select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.85rem; font-weight: 700; outline: none; appearance: none; cursor: pointer; }
 
-        .dash-grid-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
-        .stat-card { padding: 1.25rem 1.5rem; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.75rem; background: rgba(20,20,20,0.4); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        .dash-grid-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+        .stat-card { padding: 1.25rem 1.5rem; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 0.75rem; background: rgba(20,20,20,0.6); }
+        .glow-fx { transition: all 0.3s ease; }
+        .glow-fx:hover { box-shadow: inset 0 0 40px rgba(255,255,255,0.03), 0 0 20px var(--gc); border-color: var(--gc); transform: translateY(-3px); }
+        
         .stat-top { display: flex; justify-content: space-between; align-items: center; }
         .stat-title-wrap { display: flex; align-items: center; gap: 0.75rem; }
-        .stat-title { color: #aaa; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-        .stat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .stat-title { color: #aaa; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
         .stat-val { font-size: 2.2rem; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -0.03em; font-family: var(--font-display); }
+        
         .stat-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
-        .stat-change { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+        .stat-change { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
         .sc-trend { display: flex; align-items: center; gap: 0.2rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 6px; }
         .sc-trend.green { color: var(--accent-yes); background: rgba(0,200,83,0.15); }
         .sc-trend.red { color: var(--accent-no); background: rgba(229,57,53,0.15); }
-        .sc-period { color: #666; font-weight: 600; }
-        .sparkline { width: 60px; height: 25px; overflow: visible; }
+        .sparkline { width: 65px; height: 25px; overflow: visible; }
 
-        .dash-grid-main { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
-        .dash-chart { padding: 1.5rem; border-radius: var(--radius-lg); background: rgba(20,20,20,0.4); border: 1px solid rgba(255,255,255,0.05); min-height: 380px; display: flex; flex-direction: column; }
+        .dash-grid-main { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+        .dash-chart { padding: 1.5rem; border-radius: var(--radius-lg); background: rgba(20,20,20,0.6); border: 1px solid rgba(255,255,255,0.08); min-height: 380px; }
+        .flex-col { display: flex; flex-direction: column; }
+        .justify-between { justify-content: space-between; }
         
         .ch-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .ch-header h3 { font-size: 1.1rem; font-weight: 800; margin: 0; }
-        .ch-legend { display: flex; gap: 1rem; font-size: 0.8rem; font-weight: 700; color: #888; text-transform: uppercase; }
+        .ch-header h3 { font-size: 1.1rem; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 0.05em; color: #fff;}
+        .ch-legend { display: flex; gap: 1rem; font-size: 0.8rem; font-weight: 800; color: #888; text-transform: uppercase; }
         .ch-legend span { display: flex; align-items: center; gap: 0.4rem; }
         .l-dot { width: 10px; height: 10px; border-radius: 4px; }
         .l-dot.green { background: #00C853; }
@@ -206,54 +222,70 @@ const AdminDashboard = () => {
         .chart-svg { width: 100%; height: 100%; max-height: 250px; overflow: visible; }
         .ch-labels { display: flex; justify-content: space-between; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; color: #666; font-size: 0.75rem; font-weight: 700; font-family: monospace; }
         
-        .dash-side { display: flex; flex-direction: column; gap: 1rem; }
-        .ds-box { padding: 1.5rem; border-radius: var(--radius-lg); background: rgba(20,20,20,0.4); border: 1px solid rgba(255,255,255,0.05); flex: 1; }
-        .ds-box h3 { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: #888; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem; }
+        .dash-side { display: flex; flex-direction: column; gap: 1.5rem; }
+        .ds-box { padding: 1.5rem; border-radius: var(--radius-lg); background: rgba(20,20,20,0.6); border: 1px solid rgba(255,255,255,0.08); flex: 1; display: flex; flex-direction: column; }
+        .ds-box h3 { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; color: #ccc; margin-bottom: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        
+        .inline-icon { display: inline-block; vertical-align: middle; }
+        .text-orange { color: #FF9800; }
+        .text-yellow { color: #FFD600; }
+        .text-cyan { color: #00E5FF; }
 
-        .tm-list { display: flex; flex-direction: column; gap: 1rem; }
+        .tm-list { display: flex; flex-direction: column; gap: 1.1rem; }
         .tm-item { display: flex; justify-content: space-between; align-items: center; }
-        .tm-name { font-size: 0.9rem; font-weight: 600; color: #ddd; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .tm-name { font-size: 0.9rem; font-weight: 700; color: #ddd; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .tm-stats { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
-        .tm-vol { font-size: 0.9rem; font-weight: 800; font-family: monospace; }
-        .tm-change { font-size: 0.75rem; font-weight: 700; }
-        .tm-change.green { color: var(--accent-yes); }
-        .tm-change.red { color: var(--accent-no); }
-
+        .tm-vol { font-size: 0.95rem; font-weight: 900; font-family: monospace; color: #fff; }
+        .tm-change { font-size: 0.75rem; font-weight: 800; }
+        .tm-change.green { color: var(--accent-yes); background: rgba(0,200,83,0.1); padding: 0.1rem 0.4rem; border-radius: 4px; }
+        
         .ph-list { display: flex; flex-direction: column; gap: 1rem; }
-        .ph-item { display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.02); padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); }
-        .phi-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); }
-        .phi-icon.blue { color: #4096FF; background: rgba(64,150,255,0.15); }
-        .phi-icon.yellow { color: var(--accent-yellow); background: rgba(255,214,0,0.15); }
-        .phi-icon.purple { color: #e040fb; background: rgba(224,64,251,0.15); }
+        .ph-item { display: flex; align-items: center; gap: 0.8rem; background: rgba(255,255,255,0.02); padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); }
+        .phi-avatar { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; }
+        .bg-red { background: rgba(229,57,53, 0.2); border: 1px solid rgba(229,57,53, 0.3); color: #ff5252; }
+        .bg-blue { background: rgba(64,150,255, 0.2); border: 1px solid rgba(64,150,255, 0.3); color: #4096FF; }
+        
         .phi-info { display: flex; flex-direction: column; gap: 0.1rem; flex: 1; }
-        .phi-label { font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; }
-        .phi-val { font-size: 0.9rem; font-weight: 800; font-family: monospace; color: #fff; }
-        .phi-status { font-size: 0.75rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
-        .phi-status.green { background: rgba(0,200,83,0.1); color: var(--accent-yes); border: 1px solid rgba(0,200,83,0.2); }
-        .phi-status.orange { background: rgba(255,152,0,0.1); color: #ff9800; border: 1px solid rgba(255,152,0,0.2); }
+        .phi-label { font-size: 0.85rem; font-weight: 800; color: #fff; }
+        .phi-val { font-size: 0.75rem; font-weight: 600; color: #aaa; }
+        
+        .btn-solid-glow.small { background: transparent; padding: 0.3rem 0.6rem; font-size: 0.7rem; border-radius: 6px; box-shadow: none; cursor: pointer; text-transform: uppercase; font-weight: 800; transition: all 0.2s; }
+        .btn-solid-glow.small.bg-red:hover { background: #ff5252; color: #000; }
+        .btn-solid-glow.small.bg-blue:hover { background: #4096FF; color: #000; }
 
-        .dash-footer { padding: 1.5rem; border-radius: var(--radius-lg); background: rgba(20,20,20,0.4); border: 1px solid rgba(255,255,255,0.05); }
-        .df-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .df-header h3 { font-size: 1rem; font-weight: 800; text-transform: uppercase; color: #888; margin: 0; }
-        .df-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .mt-6 { margin-top: 2rem; }
+        .forecast-section { padding: 1.5rem; border-radius: var(--radius-xl); background: rgba(20,20,20,0.6); border: 1px solid rgba(0,229,255,0.15); box-shadow: 0 10px 40px rgba(0,229,255,0.05); }
+        .fc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem; }
+        .fc-title-group h3 { font-size: 1.3rem; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .fc-title-group p { font-size: 0.9rem; color: #888; font-weight: 500; }
+        .ai-badge { background: rgba(0,229,255,0.1); color: #00E5FF; padding: 0.4rem 0.8rem; border-radius: 100px; font-size: 0.8rem; font-weight: 800; border: 1px solid rgba(0,229,255,0.2); }
+
+        .fc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .fc-card { display: flex; flex-direction: column; gap: 0.6rem; }
+        .fc-card h4 { font-size: 0.8rem; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 0.05em; }
+        .fc-val { font-size: 2.2rem; font-weight: 900; line-height: 1; font-family: var(--font-display); }
         
-        .act-item { display: flex; gap: 0.85rem; align-items: flex-start; }
-        .act-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 0.4rem; flex-shrink: 0; }
-        .act-dot.user { background: #4096FF; box-shadow: 0 0 10px #4096FF; }
-        .act-dot.trade { background: #00C853; box-shadow: 0 0 10px #00C853; }
-        .act-dot.alert { background: #FFD600; box-shadow: 0 0 10px #FFD600; }
-        .act-dot.market { background: #AB47BC; box-shadow: 0 0 10px #AB47BC; }
+        .text-blue { color: #4096FF; }
+        .bg-blue { background: #4096FF; }
+        .text-green { color: #00C853; }
+        .bg-green { background: #00C853; }
+        .text-purple { color: #e040fb; }
+        .bg-purple { background: #e040fb; }
+        .text-yellow { color: #FFD600; }
+        .bg-yellow { background: #FFD600; }
         
-        .act-content p { font-size: 0.85rem; color: #ddd; line-height: 1.4; margin-bottom: 0.3rem; font-weight: 600; }
-        .act-content span { font-size: 0.7rem; color: #666; display: block; }
-        .mono { font-family: monospace; }
-        
-        .btn-ghost { background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; }
-        .btn-ghost:hover { text-decoration: underline; }
+        .fc-bar { width: 100%; height: 6px; border-radius: 10px; background: rgba(255,255,255,0.05); overflow: hidden; margin-top: 0.5rem; }
+        .fc-fill { height: 100%; border-radius: 10px; box-shadow: 0 0 10px currentColor; }
+        .fc-eta { font-size: 0.75rem; color: #888; font-weight: 600; margin-top: 0.2rem; }
 
         @media (max-width: 1024px) {
           .dash-grid-main { grid-template-columns: 1fr; }
+          .fc-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
           .dash-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+          .fc-grid { grid-template-columns: 1fr; }
+          .fc-header { flex-direction: column; gap: 1rem; }
         }
       `}</style>
     </div>

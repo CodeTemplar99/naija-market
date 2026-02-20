@@ -74,7 +74,12 @@ body {
 }
 
 @media (max-width: 1024px) {
-  .main-content { margin-left: 0; padding: 1rem; }
+  .main-content { 
+    margin-left: 0; 
+    padding: 0 0 calc(95px + env(safe-area-inset-bottom, 20px)) 0; 
+    width: 100vw;
+    overflow-x: hidden;
+  }
 }
 
 .sidebar-overlay {

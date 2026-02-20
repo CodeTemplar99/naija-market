@@ -74,8 +74,25 @@ const Navbar = ({ toggleSidebar }) => {
         .tl { left: 5px; }
         .tr { right: 5px; }
 
+        @media (max-width: 1024px) {
+          .topbar {
+            border-radius: 0;
+            margin-bottom: 1rem;
+            padding: max(0.5rem, env(safe-area-inset-top)) 1rem 0.5rem 1rem;
+            top: 0;
+            height: auto;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            background: rgba(10, 14, 12, 0.9);
+          }
+          [data-theme="light"] .topbar { background: rgba(255, 255, 255, 0.9); }
+        }
+
         @media (max-width: 768px) {
-          .search-box { width: 180px; }
+          .search-box { width: 140px; padding: 0.35rem 0.7rem; }
           .wallet-pill .wb-val { display: none; }
           .bal-toggle { display: none; }
           .kbd { display: none; }

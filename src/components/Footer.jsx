@@ -83,7 +83,7 @@ const Footer = () => {
           padding: 4rem 2rem 2rem;
           margin-top: 4rem;
         }
-        @media (max-width: 1024px) { .site-footer { margin-left: 0; padding: 3rem 1.5rem 1.5rem; } }
+        @media (max-width: 1024px) { .site-footer { margin-left: 0; padding: 3rem 1.5rem calc(110px + env(safe-area-inset-bottom)); } }
 
         .ft-inner { max-width: 1200px; margin: 0 auto; }
 

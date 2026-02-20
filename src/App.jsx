@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
+import BottomNav from './components/BottomNav'
 import Footer from './components/Footer'
 import Markets from './pages/Markets'
 import MarketDetail from './pages/MarketDetail'
@@ -88,6 +89,7 @@ function App() {
           </Routes>
         </div>
         <Footer />
+        {!isAdmin && !isAuthPage && <BottomNav />}
       </div>
     </div>
   )
